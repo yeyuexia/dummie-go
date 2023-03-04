@@ -33,6 +33,8 @@ func (c *KeyValueCache) GetValue(t reflect.Type, fieldName string) any {
 		return c.tryGetCachedValue(t.Name(), fieldName, "uint")
 	case reflect.Struct, reflect.Map, reflect.Array, reflect.Slice, reflect.Chan, reflect.Pointer:
 		return c.tryGetCachedValue(t.Name(), fieldName, t.Name())
+	case reflect.String:
+		return c.tryGetCachedValue(t.Name(), fieldName, "string")
 	}
 	//TODO: fix nullpointer
 	return c.Cache[t.Name()][fieldName]

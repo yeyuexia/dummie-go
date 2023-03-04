@@ -18,7 +18,14 @@ type Configuration struct {
 }
 
 func NewConfiguration() *Configuration {
-	return &Configuration{}
+	return &Configuration{
+		Strategy: Strategy{
+			GlobalStrategy:  constant.Default,
+			FieldStrategies: make(map[string]constant.GenerateStrategy),
+			TypeStrategies:  make(map[string]constant.GenerateStrategy),
+		},
+		DefaultValues: make(map[string]map[string]any),
+	}
 }
 
 func (c *Configuration) Override(target, value any) *Configuration {

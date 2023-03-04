@@ -88,7 +88,67 @@ func TestInflateComplexData(t *testing.T) {
 }
 
 func TestOverrideByType(t *testing.T) {
+	configuration := NewConfiguration()
+	stringValue := "123456"
+	intValue := 24
+	int16Value := int16(50)
+	int32Value := int32(31)
+	int64Value := int64(1234)
+	int8Value := int8(36)
+	configuration.Override("", stringValue).
+		Override(int8(1), int8Value).
+		Override(1, intValue).
+		Override(int16(1), int16Value).
+		Override(int32(1), int32Value).
+		Override(int64(1), int64Value)
+	data := ComplexData{}
 
+	InflateWithConfiguration(&data, configuration)
+
+	if len(data.Array) != 1 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if len(data.PointerArray) != 1 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	primitiveData := data.Array[0]
+	if primitiveData.String != stringValue {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if primitiveData.Int != intValue {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if primitiveData.Int8 != int8Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if primitiveData.Int16 != int16Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if primitiveData.Int32 != int32Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if primitiveData.Int64 != int64Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	primitivePointerData := data.PointerArray[0]
+	if *primitivePointerData.String != stringValue {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int != intValue {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int8 != int8Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int16 != int16Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int32 != int32Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int64 != int64Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
 }
 
 func verifyPrimitiveData(t *testing.T, data *PrimitiveData) {
