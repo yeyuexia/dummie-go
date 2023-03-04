@@ -29,7 +29,7 @@ type PrimitiveData struct {
 	Uint64     uint64
 	String     string
 	Float32    float32
-	FLoat64    float64
+	Float64    float64
 	Complex64  complex64
 	Complex128 complex128
 }
@@ -55,7 +55,7 @@ type PrimitivePointerData struct {
 	Uint64     *uint64
 	String     *string
 	Float32    *float32
-	FLoat64    *float64
+	Float64    *float64
 	Complex64  *complex64
 	Complex128 *complex128
 }
@@ -95,12 +95,16 @@ func TestOverrideByType(t *testing.T) {
 	int32Value := int32(31)
 	int64Value := int64(1234)
 	int8Value := int8(36)
+	float32Value := float32(3.0)
+	float64Value := float64(41.0)
 	configuration.Override("", stringValue).
 		Override(int8(1), int8Value).
 		Override(1, intValue).
 		Override(int16(1), int16Value).
 		Override(int32(1), int32Value).
-		Override(int64(1), int64Value)
+		Override(int64(1), int64Value).
+		Override(float32(1), float32Value).
+		Override(float64(1), float64Value)
 	data := ComplexData{}
 
 	InflateWithConfiguration(&data, configuration)
@@ -130,6 +134,12 @@ func TestOverrideByType(t *testing.T) {
 	if primitiveData.Int64 != int64Value {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
+	if primitiveData.Float32 != float32Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if primitiveData.Float64 != float64Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
 	primitivePointerData := data.PointerArray[0]
 	if *primitivePointerData.String != stringValue {
 		t.Fatal("Dummie didn't fill the correct data.")
@@ -147,6 +157,12 @@ func TestOverrideByType(t *testing.T) {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
 	if *primitivePointerData.Int64 != int64Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Float32 != float32Value {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Float64 != float64Value {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
 }
@@ -188,7 +204,7 @@ func verifyPrimitiveData(t *testing.T, data *PrimitiveData) {
 	if data.Float32 != 1.0 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if data.FLoat64 != 1.0 {
+	if data.Float64 != 1.0 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
 	if data.Complex64 != complex(1, 1) {
@@ -236,7 +252,7 @@ func verifyPrimitivePointerData(t *testing.T, data *PrimitivePointerData) {
 	if *data.Float32 != 1.0 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *data.FLoat64 != 1.0 {
+	if *data.Float64 != 1.0 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
 	if *data.Complex64 != complex(1, 1) {
