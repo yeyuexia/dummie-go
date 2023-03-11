@@ -1,6 +1,7 @@
 package dummie
 
 import (
+	"fmt"
 	"reflect"
 )
 
@@ -18,6 +19,7 @@ func NewCache(configuration *Configuration) *KeyValueCache {
 			cache.SetValue(targetType, name, value)
 		}
 	}
+	fmt.Println(cache.Cache)
 	return &cache
 }
 
@@ -35,8 +37,9 @@ func (c *KeyValueCache) GetValue(t reflect.Type, fieldName string) any {
 		return c.tryGetCachedValue(t.Name(), fieldName, t.Name())
 	case reflect.String:
 		return c.tryGetCachedValue(t.Name(), fieldName, "string")
+	case reflect.Complex64, reflect.Complex128:
+		return c.tryGetCachedValue(t.Name(), fieldName, "complex128")
 	}
-	//TODO: fix nullpointer
 	return c.Cache[t.Name()][fieldName]
 }
 
@@ -49,6 +52,7 @@ func (c *KeyValueCache) SetValue(typeName string, name string, value any) {
 }
 
 func (c *KeyValueCache) tryGetCachedValue(primaryKey string, secondKey string, defaultKey string) any {
+	fmt.Printf("tryGetCachedValue, %s %s %s\n", primaryKey, secondKey, defaultKey)
 	if valMap, ok := c.Cache[primaryKey]; ok {
 		if val, ok := valMap[secondKey]; ok {
 			return val

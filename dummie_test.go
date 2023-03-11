@@ -80,31 +80,100 @@ func TestInflateComplexData(t *testing.T) {
 	if len(data.Array) != 1 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
+	verifyPrimitiveData(t, &data.Array[0])
 	if len(data.PointerArray) != 1 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	verifyPrimitiveData(t, &data.Array[0])
 	verifyPrimitivePointerData(t, data.PointerArray[0])
+}
+
+var mockData = PrimitiveData{
+	Bool:       false,
+	String:     "123456",
+	Int:        24,
+	Int8:       int8(36),
+	Int16:      int16(50),
+	Int32:      int32(31),
+	Int64:      int64(1234),
+	Uint:       24,
+	Uint8:      uint8(36),
+	Uint16:     uint16(50),
+	Uint32:     uint32(31),
+	Uint64:     uint64(1234),
+	Float32:    float32(3.0),
+	Float64:    float64(41.0),
+	Complex64:  complex(float32(123.0), -float32(234.4)),
+	Complex128: complex(float64(555), float64(666)),
 }
 
 func TestOverrideByType(t *testing.T) {
 	configuration := NewConfiguration()
-	stringValue := "123456"
-	intValue := 24
-	int16Value := int16(50)
-	int32Value := int32(31)
-	int64Value := int64(1234)
-	int8Value := int8(36)
-	float32Value := float32(3.0)
-	float64Value := float64(41.0)
-	configuration.Override("", stringValue).
-		Override(int8(1), int8Value).
-		Override(1, intValue).
-		Override(int16(1), int16Value).
-		Override(int32(1), int32Value).
-		Override(int64(1), int64Value).
-		Override(float32(1), float32Value).
-		Override(float64(1), float64Value)
+	configuration.Override("", mockData.String).
+		Override(true, mockData.Bool).
+		Override(1, mockData.Int).
+		Override(int8(1), mockData.Int8).
+		Override(int16(1), mockData.Int16).
+		Override(int32(1), mockData.Int32).
+		Override(int64(1), mockData.Int64).
+		Override(uint(1), mockData.Uint).
+		Override(uint8(1), mockData.Uint8).
+		Override(uint16(1), mockData.Uint16).
+		Override(uint32(1), mockData.Uint32).
+		Override(uint64(1), mockData.Uint64).
+		Override(float32(1), mockData.Float32).
+		Override(float64(1), mockData.Float64).
+		Override(complex(float32(1), 1), mockData.Complex64).
+		Override(complex(float64(1), float64(1)), mockData.Complex128)
+	data := ComplexData{}
+
+	InflateWithConfiguration(&data, configuration)
+
+	if len(data.Array) != 1 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	verifyOverridePrimitiveData(t, data.Array[0])
+	if len(data.PointerArray) != 1 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	verifyOverridePrimitivePoinerData(t, *data.PointerArray[0])
+}
+
+func TestOverrideStruct(t *testing.T) {
+	configuration := NewConfiguration()
+	configuration.Override(PrimitiveData{}, mockData)
+	data := ComplexData{}
+
+	InflateWithConfiguration(&data, configuration)
+
+	if len(data.Array) != 1 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	verifyOverridePrimitiveData(t, data.Array[0])
+	if len(data.PointerArray) != 1 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	verifyPrimitivePointerData(t, data.PointerArray[0])
+}
+
+func TestOverrideByPath(t *testing.T) {
+	configuration := NewConfiguration()
+	configuration.OverrideWithPath("Array", mockData).
+		OverrideWithPath("String", mockData.String).
+		OverrideWithPath("Bool", mockData.Bool).
+		Override(1, mockData.Int).
+		Override(int8(1), mockData.Int8).
+		Override(int16(1), mockData.Int16).
+		Override(int32(1), mockData.Int32).
+		Override(int64(1), mockData.Int64).
+		Override(uint(1), mockData.Uint).
+		Override(uint8(1), mockData.Uint8).
+		Override(uint16(1), mockData.Uint16).
+		Override(uint32(1), mockData.Uint32).
+		Override(uint64(1), mockData.Uint64).
+		Override(float32(1), mockData.Float32).
+		Override(float64(1), mockData.Float64).
+		Override(complex(float32(1), 1), mockData.Complex64).
+		Override(complex(float64(1), float64(1)), mockData.Complex128)
 	data := ComplexData{}
 
 	InflateWithConfiguration(&data, configuration)
@@ -115,54 +184,109 @@ func TestOverrideByType(t *testing.T) {
 	if len(data.PointerArray) != 1 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	primitiveData := data.Array[0]
-	if primitiveData.String != stringValue {
+
+	verifyOverridePrimitiveData(t, data.Array[0])
+	verifyOverridePrimitivePoinerData(t, *data.PointerArray[0])
+}
+
+func verifyOverridePrimitiveData(t *testing.T, primitiveData PrimitiveData) {
+	if primitiveData.Bool != mockData.Bool {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if primitiveData.Int != intValue {
+	if primitiveData.String != mockData.String {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if primitiveData.Int8 != int8Value {
+	if primitiveData.Int != mockData.Int {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if primitiveData.Int16 != int16Value {
+	if primitiveData.Int8 != mockData.Int8 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if primitiveData.Int32 != int32Value {
+	if primitiveData.Int16 != mockData.Int16 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if primitiveData.Int64 != int64Value {
+	if primitiveData.Int32 != mockData.Int32 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if primitiveData.Float32 != float32Value {
+	if primitiveData.Int64 != mockData.Int64 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if primitiveData.Float64 != float64Value {
+	if primitiveData.Uint != mockData.Uint {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	primitivePointerData := data.PointerArray[0]
-	if *primitivePointerData.String != stringValue {
+	if primitiveData.Uint8 != mockData.Uint8 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *primitivePointerData.Int != intValue {
+	if primitiveData.Uint16 != mockData.Uint16 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *primitivePointerData.Int8 != int8Value {
+	if primitiveData.Uint32 != mockData.Uint32 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *primitivePointerData.Int16 != int16Value {
+	if primitiveData.Uint64 != mockData.Uint64 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *primitivePointerData.Int32 != int32Value {
+	if primitiveData.Float32 != mockData.Float32 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *primitivePointerData.Int64 != int64Value {
+	if primitiveData.Float64 != mockData.Float64 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *primitivePointerData.Float32 != float32Value {
+	if primitiveData.Complex64 != mockData.Complex64 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
-	if *primitivePointerData.Float64 != float64Value {
+	if primitiveData.Complex128 != mockData.Complex128 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+}
+
+func verifyOverridePrimitivePoinerData(t *testing.T, primitivePointerData PrimitivePointerData) {
+	if *primitivePointerData.String != mockData.String {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Bool != mockData.Bool {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int != mockData.Int {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int8 != mockData.Int8 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int16 != mockData.Int16 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int32 != mockData.Int32 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Int64 != mockData.Int64 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Uint != mockData.Uint {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Uint8 != mockData.Uint8 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Uint16 != mockData.Uint16 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Uint32 != mockData.Uint32 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Uint64 != mockData.Uint64 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Float32 != mockData.Float32 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Float64 != mockData.Float64 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Complex64 != mockData.Complex64 {
+		t.Fatal("Dummie didn't fill the correct data.")
+	}
+	if *primitivePointerData.Complex128 != mockData.Complex128 {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
 }
