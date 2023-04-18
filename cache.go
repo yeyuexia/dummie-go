@@ -1,7 +1,6 @@
 package dummie
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -16,10 +15,9 @@ func NewCache(configuration *Configuration) *KeyValueCache {
 
 	for targetType, values := range configuration.DefaultValues {
 		for name, value := range values {
-			cache.SetValue(targetType, name, value)
+			cache.initalValue(targetType, name, value)
 		}
 	}
-	fmt.Println(cache.Cache)
 	return &cache
 }
 
@@ -51,8 +49,15 @@ func (c *KeyValueCache) SetValue(typeName string, name string, value any) {
 	c.Cache[typeName][name] = value
 }
 
+func (c *KeyValueCache) initalValue(typeName string, name string, value any) {
+	if _, ok := c.Cache[typeName]; !ok {
+		c.Cache[typeName] = map[string]any{}
+	}
+	c.Cache[typeName][name] = value
+}
+
+// secondKey is path of the current field
 func (c *KeyValueCache) tryGetCachedValue(primaryKey string, secondKey string, defaultKey string) any {
-	fmt.Printf("tryGetCachedValue, %s %s %s\n", primaryKey, secondKey, defaultKey)
 	if valMap, ok := c.Cache[primaryKey]; ok {
 		if val, ok := valMap[secondKey]; ok {
 			return val

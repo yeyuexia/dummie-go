@@ -157,9 +157,9 @@ func TestOverrideStruct(t *testing.T) {
 
 func TestOverrideByPath(t *testing.T) {
 	configuration := NewConfiguration()
-	configuration.OverrideWithPath("Array", mockData).
-		OverrideWithPath("String", mockData.String).
-		OverrideWithPath("Bool", mockData.Bool).
+	configuration.OverrideWithPath("Array.[]", mockData).
+		OverrideWithPath("PointerArray.[].String", mockData.String).
+		OverrideWithPath("PointerArray.[].Bool", mockData.Bool).
 		Override(1, mockData.Int).
 		Override(int8(1), mockData.Int8).
 		Override(int16(1), mockData.Int16).
@@ -323,7 +323,7 @@ func verifyPrimitiveData(t *testing.T, data *PrimitiveData) {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
 	if data.String != "String" {
-		t.Fatal("Dummie didn't fill the correct data.")
+		t.Fatalf("Dummie didn't fill the correct data. want: String actually: %s", data.String)
 	}
 	if data.Float32 != 1.0 {
 		t.Fatal("Dummie didn't fill the correct data.")
@@ -371,7 +371,7 @@ func verifyPrimitivePointerData(t *testing.T, data *PrimitivePointerData) {
 		t.Fatal("Dummie didn't fill the correct data.")
 	}
 	if *data.String != "String" {
-		t.Fatal("Dummie didn't fill the correct data.")
+		t.Fatalf("Dummie didn't fill the correct data. want: String actually: %s", *data.String)
 	}
 	if *data.Float32 != 1.0 {
 		t.Fatal("Dummie didn't fill the correct data.")

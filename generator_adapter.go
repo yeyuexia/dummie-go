@@ -39,9 +39,12 @@ func NewGenerators() *GeneratorManager {
 	}
 }
 
-func (g *GeneratorManager) GenerateValue(t reflect.Type, strategy constant.GenerateStrategy, path string) any {
+func (g *GeneratorManager) GenerateValue(t reflect.Type, strategy constant.GenerateStrategy, path []string) any {
 	if generator, ok := g.Generators[t.Kind()]; ok {
-		return generator.Generate(strategy, path)
+		if len(path) == 0 {
+			return generator.Generate(strategy, ".")
+		}
+		return generator.Generate(strategy, path[0])
 	}
 	return nil
 }
