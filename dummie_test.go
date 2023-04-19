@@ -242,7 +242,7 @@ func verifyOverridePrimitiveData(t *testing.T, primitiveData PrimitiveData) {
 
 func verifyOverridePrimitivePoinerData(t *testing.T, primitivePointerData PrimitivePointerData) {
 	if *primitivePointerData.String != mockData.String {
-		t.Fatal("Dummie didn't fill the correct data.")
+		t.Fatalf("Dummie didn't fill the correct data. want: String actually: %s", *primitivePointerData.String)
 	}
 	if *primitivePointerData.Bool != mockData.Bool {
 		t.Fatal("Dummie didn't fill the correct data.")
