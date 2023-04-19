@@ -1,0 +1,9 @@
+dist: trusty
+language: go
+sudo: false
+go: 1.20
+os:
+  - linux
+install: true
+script:
+  - go test
