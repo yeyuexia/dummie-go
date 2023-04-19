@@ -2,7 +2,6 @@ package dummie
 
 import (
 	"reflect"
-	"strings"
 
 	"github.com/yeyuexia/dummie-go/constant"
 )
@@ -128,20 +127,20 @@ func (d *Dummie) tryInflateDirectly(target reflect.Value, path []string) bool {
 }
 
 func (d *Dummie) getCachedValue(t reflect.Type, path []string) any {
-	pathString := getPathString(path)
-	value := d.Cache.GetValue(t, pathString)
+	fieldName := getFieldName(path)
+	value := d.Cache.GetValue(t, fieldName)
 	if value != nil {
 		return value
 	}
-	value = d.GeneratorManager.GenerateValue(t, d.getStrategy(t, pathString), path)
+	value = d.GeneratorManager.GenerateValue(t, d.getStrategy(t, fieldName), path)
 	if value != nil {
-		d.Cache.SetValue(t.Name(), pathString, value)
+		d.Cache.SetValue(t.Name(), fieldName, value)
 	}
 	return value
 }
 
-func (d *Dummie) getStrategy(t reflect.Type, path string) constant.GenerateStrategy {
-	if strategy, ok := d.Configuration.Strategy.FieldStrategies[path]; ok {
+func (d *Dummie) getStrategy(t reflect.Type, fieldName string) constant.GenerateStrategy {
+	if strategy, ok := d.Configuration.Strategy.FieldStrategies[fieldName]; ok {
 		return strategy
 	}
 	if strategy, ok := d.Configuration.Strategy.TypeStrategies[t.Name()]; ok {
@@ -150,25 +149,11 @@ func (d *Dummie) getStrategy(t reflect.Type, path string) constant.GenerateStrat
 	return d.Configuration.Strategy.GlobalStrategy
 }
 
-func getPathString(elems []string) string {
+func getFieldName(elems []string) string {
 	switch len(elems) {
-	case 0:
-		return ""
 	case 1:
 		return elems[0]
+	default:
+		return ""
 	}
-
-	n := len(elems) - 1
-	for _, elem := range elems {
-		n += len(elem)
-	}
-
-	var b strings.Builder
-	b.Grow(n)
-	for i := len(elems) - 1; i > 0; i-- {
-		b.WriteString(elems[i])
-		b.WriteString(".")
-	}
-	b.WriteString(elems[0])
-	return b.String()
 }

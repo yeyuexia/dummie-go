@@ -155,11 +155,11 @@ func TestOverrideStruct(t *testing.T) {
 	verifyPrimitivePointerData(t, data.PointerArray[0])
 }
 
-func TestOverrideByPath(t *testing.T) {
+func TestOverrideByFieldName(t *testing.T) {
 	configuration := NewConfiguration()
-	configuration.OverrideWithPath("Array.[]", mockData).
-		OverrideWithPath("PointerArray.[].String", mockData.String).
-		OverrideWithPath("PointerArray.[].Bool", mockData.Bool).
+	configuration.OverrideWithFieldName("Array", mockData).
+		OverrideWithFieldName("String", mockData.String).
+		OverrideWithFieldName("Bool", mockData.Bool).
 		Override(1, mockData.Int).
 		Override(int8(1), mockData.Int8).
 		Override(int16(1), mockData.Int16).

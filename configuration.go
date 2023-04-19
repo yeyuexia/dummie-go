@@ -37,12 +37,12 @@ func (c *Configuration) Override(target, value any) *Configuration {
 	return c
 }
 
-func (c *Configuration) OverrideWithPath(path string, value any) *Configuration {
+func (c *Configuration) OverrideWithFieldName(fieldName string, value any) *Configuration {
 	targetType := reflect.ValueOf(value).Type().Name()
 	if _, ok := c.DefaultValues[targetType]; !ok {
 		c.DefaultValues[targetType] = map[string]any{}
 	}
-	c.DefaultValues[targetType][path] = value
+	c.DefaultValues[targetType][fieldName] = value
 	return c
 }
 
