@@ -51,7 +51,7 @@ func (c *Configuration) GlobalGenerateStrategy(strategy constant.GenerateStrateg
 	return c
 }
 
-func (c *Configuration) GenerateStrategy(path string, strategy constant.GenerateStrategy) *Configuration {
-	c.Strategy.FieldStrategies[path] = strategy
+func (c *Configuration) GenerateStrategy(fieldName string, strategy constant.GenerateStrategy) *Configuration {
+	c.Strategy.FieldStrategies[fieldName] = strategy
 	return c
 }

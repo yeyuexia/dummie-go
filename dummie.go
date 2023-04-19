@@ -150,10 +150,13 @@ func (d *Dummie) getStrategy(t reflect.Type, fieldName string) constant.Generate
 }
 
 func getFieldName(elems []string) string {
-	switch len(elems) {
-	case 1:
-		return elems[0]
-	default:
+	if len(elems) == 0 {
 		return ""
 	}
+	for _, elem := range elems {
+		if elem != "[]" {
+			return elem
+		}
+	}
+	return ""
 }
