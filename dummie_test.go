@@ -108,22 +108,22 @@ var mockData = PrimitiveData{
 
 func TestOverrideByType(t *testing.T) {
 	configuration := NewConfiguration()
-	configuration.Override("", mockData.String).
-		Override(true, mockData.Bool).
-		Override(1, mockData.Int).
-		Override(int8(1), mockData.Int8).
-		Override(int16(1), mockData.Int16).
-		Override(int32(1), mockData.Int32).
-		Override(int64(1), mockData.Int64).
-		Override(uint(1), mockData.Uint).
-		Override(uint8(1), mockData.Uint8).
-		Override(uint16(1), mockData.Uint16).
-		Override(uint32(1), mockData.Uint32).
-		Override(uint64(1), mockData.Uint64).
-		Override(float32(1), mockData.Float32).
-		Override(float64(1), mockData.Float64).
-		Override(complex(float32(1), 1), mockData.Complex64).
-		Override(complex(float64(1), float64(1)), mockData.Complex128)
+	configuration.OverrideType("", mockData.String).
+		OverrideType(true, mockData.Bool).
+		OverrideType(1, mockData.Int).
+		OverrideType(int8(1), mockData.Int8).
+		OverrideType(int16(1), mockData.Int16).
+		OverrideType(int32(1), mockData.Int32).
+		OverrideType(int64(1), mockData.Int64).
+		OverrideType(uint(1), mockData.Uint).
+		OverrideType(uint8(1), mockData.Uint8).
+		OverrideType(uint16(1), mockData.Uint16).
+		OverrideType(uint32(1), mockData.Uint32).
+		OverrideType(uint64(1), mockData.Uint64).
+		OverrideType(float32(1), mockData.Float32).
+		OverrideType(float64(1), mockData.Float64).
+		OverrideType(complex(float32(1), 1), mockData.Complex64).
+		OverrideType(complex(float64(1), float64(1)), mockData.Complex128)
 	data := ComplexData{}
 
 	InflateWithConfiguration(&data, configuration)
@@ -140,7 +140,7 @@ func TestOverrideByType(t *testing.T) {
 
 func TestOverrideStruct(t *testing.T) {
 	configuration := NewConfiguration()
-	configuration.Override(PrimitiveData{}, mockData)
+	configuration.OverrideType(PrimitiveData{}, mockData)
 	data := ComplexData{}
 
 	InflateWithConfiguration(&data, configuration)
@@ -157,23 +157,23 @@ func TestOverrideStruct(t *testing.T) {
 
 func TestOverrideByFieldName(t *testing.T) {
 	configuration := NewConfiguration()
-	configuration.OverrideWithFieldName("Array", mockData).
-		OverrideWithFieldName("String", mockData.String).
-		OverrideWithFieldName("Bool", mockData.Bool).
-		Override(1, mockData.Int).
-		Override(int8(1), mockData.Int8).
-		Override(int16(1), mockData.Int16).
-		Override(int32(1), mockData.Int32).
-		Override(int64(1), mockData.Int64).
-		Override(uint(1), mockData.Uint).
-		Override(uint8(1), mockData.Uint8).
-		Override(uint16(1), mockData.Uint16).
-		Override(uint32(1), mockData.Uint32).
-		Override(uint64(1), mockData.Uint64).
-		Override(float32(1), mockData.Float32).
-		Override(float64(1), mockData.Float64).
-		Override(complex(float32(1), 1), mockData.Complex64).
-		Override(complex(float64(1), float64(1)), mockData.Complex128)
+	configuration.Override("Array", mockData).
+		Override("String", mockData.String).
+		Override("Bool", mockData.Bool).
+		OverrideType(1, mockData.Int).
+		OverrideType(int8(1), mockData.Int8).
+		OverrideType(int16(1), mockData.Int16).
+		OverrideType(int32(1), mockData.Int32).
+		OverrideType(int64(1), mockData.Int64).
+		OverrideType(uint(1), mockData.Uint).
+		OverrideType(uint8(1), mockData.Uint8).
+		OverrideType(uint16(1), mockData.Uint16).
+		OverrideType(uint32(1), mockData.Uint32).
+		OverrideType(uint64(1), mockData.Uint64).
+		OverrideType(float32(1), mockData.Float32).
+		OverrideType(float64(1), mockData.Float64).
+		OverrideType(complex(float32(1), 1), mockData.Complex64).
+		OverrideType(complex(float64(1), float64(1)), mockData.Complex128)
 	data := ComplexData{}
 
 	InflateWithConfiguration(&data, configuration)

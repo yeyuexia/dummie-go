@@ -28,21 +28,21 @@ func NewConfiguration() *Configuration {
 	}
 }
 
-func (c *Configuration) Override(target, value any) *Configuration {
-	targetType := reflect.ValueOf(target).Type().Name()
-	if _, ok := c.DefaultValues[targetType]; !ok {
-		c.DefaultValues[targetType] = map[string]any{}
-	}
-	c.DefaultValues[targetType][""] = value
-	return c
-}
-
-func (c *Configuration) OverrideWithFieldName(fieldName string, value any) *Configuration {
-	targetType := reflect.ValueOf(value).Type().Name()
+func (c *Configuration) Override(fieldName string, value any) *Configuration {
+	targetType := reflect.TypeOf(value).Name()
 	if _, ok := c.DefaultValues[targetType]; !ok {
 		c.DefaultValues[targetType] = map[string]any{}
 	}
 	c.DefaultValues[targetType][fieldName] = value
+	return c
+}
+
+func (c *Configuration) OverrideType(target, value any) *Configuration {
+	targetType := reflect.TypeOf(target).Name()
+	if _, ok := c.DefaultValues[targetType]; !ok {
+		c.DefaultValues[targetType] = map[string]any{}
+	}
+	c.DefaultValues[targetType][""] = value
 	return c
 }
 
@@ -53,5 +53,17 @@ func (c *Configuration) GlobalGenerateStrategy(strategy constant.GenerateStrateg
 
 func (c *Configuration) GenerateStrategy(fieldName string, strategy constant.GenerateStrategy) *Configuration {
 	c.Strategy.FieldStrategies[fieldName] = strategy
+	return c
+}
+
+func (c *Configuration) Random(fieldNames ...string) *Configuration {
+	for _, fieldName := range fieldNames {
+		c.GenerateStrategy(fieldName, constant.Random)
+	}
+	return c
+}
+
+func (c *Configuration) RandomType(fieldType any) *Configuration {
+	c.Strategy.TypeStrategies[reflect.TypeOf(fieldType).Name()] = constant.Random
 	return c
 }
