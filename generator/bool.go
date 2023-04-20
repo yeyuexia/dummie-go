@@ -17,9 +17,9 @@ func (g *BoolGenerator) GetType() reflect.Type {
 
 func (g *BoolGenerator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return rand.Int()&1 == 0
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return true
 	default:
 		return true

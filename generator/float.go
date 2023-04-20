@@ -17,9 +17,9 @@ func (g *Float32Generator) GetType() reflect.Type {
 
 func (g *Float32Generator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return rand.Float32()
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return 1.0
 	default:
 		return 1.0
@@ -36,9 +36,9 @@ func (g *Float64Generator) GetType() reflect.Type {
 
 func (g *Float64Generator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return rand.Float64()
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return 1.0
 	default:
 		return 1.0

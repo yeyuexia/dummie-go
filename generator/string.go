@@ -17,9 +17,9 @@ func (g *StringGenerator) GetType() reflect.Type {
 
 func (g *StringGenerator) Generate(strategy constant.GenerateStrategy, path string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return RandStringRunes(18)
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return path
 	default:
 		return path

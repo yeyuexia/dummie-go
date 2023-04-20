@@ -20,7 +20,7 @@ type Configuration struct {
 func NewConfiguration() *Configuration {
 	return &Configuration{
 		Strategy: Strategy{
-			GlobalStrategy:  constant.Default,
+			GlobalStrategy:  constant.GenerateStrategy_Default,
 			FieldStrategies: make(map[string]constant.GenerateStrategy),
 			TypeStrategies:  make(map[string]constant.GenerateStrategy),
 		},
@@ -58,12 +58,12 @@ func (c *Configuration) GenerateStrategy(fieldName string, strategy constant.Gen
 
 func (c *Configuration) Random(fieldNames ...string) *Configuration {
 	for _, fieldName := range fieldNames {
-		c.GenerateStrategy(fieldName, constant.Random)
+		c.GenerateStrategy(fieldName, constant.GenerateStrategy_Default)
 	}
 	return c
 }
 
 func (c *Configuration) RandomType(fieldType any) *Configuration {
-	c.Strategy.TypeStrategies[reflect.TypeOf(fieldType).Name()] = constant.Random
+	c.Strategy.TypeStrategies[reflect.TypeOf(fieldType).Name()] = constant.GenerateStrategy_Default
 	return c
 }

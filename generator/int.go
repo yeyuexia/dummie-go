@@ -18,9 +18,9 @@ func (g *IntGenerator) GetType() reflect.Type {
 
 func (g *IntGenerator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return rand.Int()
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return 1
 	default:
 		return 1
@@ -37,9 +37,9 @@ func (g *Int8Generator) GetType() reflect.Type {
 
 func (g *Int8Generator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return int8(rand.Intn(math.MaxInt8-math.MinInt8) + math.MinInt8)
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return 1
 	default:
 		return 1
@@ -56,9 +56,9 @@ func (g *Int16Generator) GetType() reflect.Type {
 
 func (g *Int16Generator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return int16(rand.Intn(math.MaxInt16-math.MinInt16) + math.MinInt16)
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return 1
 	default:
 		return 1
@@ -75,9 +75,9 @@ func (g *Int32Generator) GetType() reflect.Type {
 
 func (g *Int32Generator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return rand.Int31()
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return 1
 	default:
 		return 1
@@ -94,9 +94,9 @@ func (g *Int64Generator) GetType() reflect.Type {
 
 func (g *Int64Generator) Generate(strategy constant.GenerateStrategy, _ string) any {
 	switch strategy {
-	case constant.Random:
+	case constant.GenerateStrategy_Random:
 		return rand.Int63()
-	case constant.Default:
+	case constant.GenerateStrategy_Default:
 		return 1
 	default:
 		return 1

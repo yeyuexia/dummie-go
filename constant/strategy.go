@@ -3,6 +3,6 @@ package constant
 type GenerateStrategy uint
 
 const (
-	Default GenerateStrategy = iota
-	Random
+	GenerateStrategy_Default GenerateStrategy = iota
+	GenerateStrategy_Random
 )
