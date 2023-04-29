@@ -58,12 +58,12 @@ func (c *Configuration) GenerateStrategy(fieldName string, strategy constant.Gen
 
 func (c *Configuration) Random(fieldNames ...string) *Configuration {
 	for _, fieldName := range fieldNames {
-		c.GenerateStrategy(fieldName, constant.GenerateStrategy_Default)
+		c.GenerateStrategy(fieldName, constant.GenerateStrategy_Random)
 	}
 	return c
 }
 
 func (c *Configuration) RandomType(fieldType any) *Configuration {
-	c.Strategy.TypeStrategies[reflect.TypeOf(fieldType).Name()] = constant.GenerateStrategy_Default
+	c.Strategy.TypeStrategies[reflect.TypeOf(fieldType).Name()] = constant.GenerateStrategy_Random
 	return c
 }

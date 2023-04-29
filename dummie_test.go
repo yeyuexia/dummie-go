@@ -189,6 +189,29 @@ func TestOverrideByFieldName(t *testing.T) {
 	verifyOverridePrimitivePoinerData(t, *data.PointerArray[0])
 }
 
+func TestRandomField(t *testing.T) {
+	configuration := NewConfiguration()
+	configuration.Random("String", "Int")
+	data := PrimitiveData{}
+	InflateWithConfiguration(&data, configuration)
+	if data.String == "" || data.String == "String" {
+		t.Fatalf("Dummie didn't fill the correct data. %s", data.String)
+	}
+	if data.Int == 1 {
+		t.Fatalf("Dummie didn't fill the correct data. %d", data.Int)
+	}
+}
+
+func TestRandomTest(t *testing.T) {
+	configuration := NewConfiguration()
+	configuration.RandomType("")
+	data := PrimitiveData{}
+	InflateWithConfiguration(&data, configuration)
+	if data.String == "" || data.String == "String" {
+		t.Fatalf("Dummie didn't fill the correct data. %s", data.String)
+	}
+}
+
 func verifyOverridePrimitiveData(t *testing.T, primitiveData PrimitiveData) {
 	if primitiveData.Bool != mockData.Bool {
 		t.Fatal("Dummie didn't fill the correct data.")
