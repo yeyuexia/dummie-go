@@ -15,7 +15,7 @@ if err != nil {
 
 * Add Dependency
 ```groovy
-go get https://github.com/yeyuexia/dummie-go&<latestVersion>
+go get github.com/yeyuexia/dummie-go&<latestVersion>
 ```
 
 ##### Basic usage
