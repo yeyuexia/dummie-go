@@ -44,7 +44,6 @@ func (c *KeyValueCache) GetValue(t reflect.Type, fieldName string) any {
 func (c *KeyValueCache) SetValue(typeName string, name string, value any) {
 	if _, ok := c.Cache[typeName]; !ok {
 		c.Cache[typeName] = map[string]any{}
-		c.Cache[typeName][""] = value
 	}
 	c.Cache[typeName][name] = value
 }
